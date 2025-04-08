@@ -1,15 +1,18 @@
 spring:
-  application:
-    name: revenda-service
   datasource:
-    url: jdbc:h2:mem:revenda-db
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
+    url: jdbc:postgresql://localhost:5432/revenda
+    username: user
+    password: password
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+resilience4j:
+  retry:
+    instances:
+      revendaPedido:
+        max-attempts: 3
+        wait-duration: 2s
+        retry-exceptions:
+          - java.lang.RuntimeException

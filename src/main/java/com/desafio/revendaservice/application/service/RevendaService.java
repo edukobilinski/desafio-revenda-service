@@ -19,11 +19,15 @@ public class RevendaService {
 
     private final RevendaRepository revendaRepository;
     private final PedidoRevendaRepository pedidoRepository;
+    private final PedidoService pedidoService;
 
     @Autowired
-    public RevendaService(RevendaRepository revendaRepository, PedidoRevendaRepository pedidoRepository) {
+    public RevendaService(RevendaRepository revendaRepository,
+                          PedidoRevendaRepository pedidoRepository,
+                          PedidoService pedidoService) {
         this.revendaRepository = revendaRepository;
         this.pedidoRepository = pedidoRepository;
+        this.pedidoService = pedidoService;
     }
 
     public Revenda cadastrarRevenda(RevendaDto dto) {
@@ -56,6 +60,8 @@ public class RevendaService {
                 .collect(Collectors.toList()))
             .enviado(false)
             .build();
+
+        pedidoService.emitirPedido(pedido);
 
         return pedidoRepository.save(pedido);
     }
