@@ -7,6 +7,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
 
 resilience4j:
   retry:
@@ -15,4 +18,4 @@ resilience4j:
         max-attempts: 3
         wait-duration: 2s
         retry-exceptions:
-          - java.lang.RuntimeException
+          - com.desafio.revendaservice.api.exception.ApiIntegrationException

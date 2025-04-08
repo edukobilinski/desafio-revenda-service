@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/revendas")
 public class RevendaController {
@@ -27,7 +29,25 @@ public class RevendaController {
     }
 
     @PostMapping("/{id}/pedidos")
-    public ResponseEntity<PedidoRevenda> receberPedido(@PathVariable Long id, @RequestBody @Valid PedidoClienteDto dto) {
+    public ResponseEntity<PedidoRevenda> receberPedido(@PathVariable Long id,
+                                                       @RequestBody @Valid PedidoClienteDto dto) {
         return ResponseEntity.ok(revendaService.receberPedido(id, dto));
     }
+
+    @GetMapping
+    public ResponseEntity<List<Revenda>> buscarTodas() {
+        return ResponseEntity.ok(revendaService.buscarTodas());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Revenda> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(revendaService.buscarPorId(id));
+    }
+
+    @GetMapping("/{id}/pedidos")
+    public ResponseEntity<List<PedidoRevenda>> listarPedidosPorRevenda(@PathVariable Long id) {
+        List<PedidoRevenda> pedidos = revendaService.listarPedidosPorRevenda(id);
+        return ResponseEntity.ok(pedidos);
+    }
+
 }
