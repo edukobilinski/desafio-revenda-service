@@ -56,7 +56,7 @@ public class RevendaService {
 
         PedidoRevenda pedido = PedidoRevenda.builder()
             .revendaId(revendaId)
-            .clienteId(dto.clienteId())
+            .clienteId(dto.clienteId().toString())
             .itens(dto.itens().stream().map(this::toItemPedido).collect(Collectors.toList()))
             .enviado(false)
             .build();
