@@ -147,15 +147,7 @@ A aplicação conta com um pipeline configurado para:
 
 - Build
 - Execução de testes
-- Validação de qualidade
-
-Arquivo: `.github/workflows/ci.yml`
+- Validação de Docker build
 
 ---
-
-## 💡 Observações Técnicas
-
-- O envio de pedidos para a Ambev é instável de propósito (simulado)
-- Quando a API Ambev está fora, o pedido é salvo como **pendente** e pode ser **reprocessado manualmente**
-- É usada a anotação `@Retry` do **Resilience4j** com fallback para garantir resiliência
-
+Feito com 💙 para o desafio técnico.
