@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/revenda
+    username: user
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+resilience4j:
+  retry:
+    instances:
+      revendaPedido:
+        max-attempts: 3
+        wait-duration: 2s
+        retry-exceptions:
+          - com.desafio.revendaservice.api.exception.ApiIntegrationException
