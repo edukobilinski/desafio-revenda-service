@@ -1,14 +1,21 @@
 package com.desafio.revendaservice.integration;
 
+import com.desafio.revendaservice.application.client.PedidoClient;
+import com.desafio.revendaservice.application.dto.PedidoResponse;
 import com.desafio.revendaservice.domain.model.ItemPedido;
 import com.desafio.revendaservice.domain.model.PedidoPendente;
+import com.desafio.revendaservice.domain.model.PedidoRevenda;
 import com.desafio.revendaservice.infrastructure.repository.PedidoPendenteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.*;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -22,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
+@Import(PedidoPendenteIntegrationTest.FakePedidoClientConfig.class)
 class PedidoPendenteIntegrationTest {
 
     @Container
@@ -75,5 +83,20 @@ class PedidoPendenteIntegrationTest {
         // Confirma que o pedido pendente foi removido após sucesso
         List<PedidoPendente> pendentesRestantes = repository.findAll();
         assertThat(pendentesRestantes).isEmpty();
+    }
+
+    @TestConfiguration
+    static class FakePedidoClientConfig {
+
+        @Bean
+        @Primary
+        public PedidoClient fakePedidoClient() {
+            return new PedidoClient() {
+                @Override
+                public PedidoResponse emitir(PedidoRevenda pedido) {
+                    return new PedidoResponse("AMBEV-SUCESSO", null);
+                }
+            };
+        }
     }
 }
